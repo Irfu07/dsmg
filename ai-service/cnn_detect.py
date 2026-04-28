@@ -1,23 +1,25 @@
 import tensorflow as tf
 import numpy as np
-from PIL import Image
+from tensorflow.keras.preprocessing import image
 
-# Load trained model
-model = tf.keras.models.load_model("model.h5")
+model = None
 
-def cnn_detect(image_path):
-    """
-    Detect if a media file is pirated using the CNN model.
-    Returns True if pirated, False if original.
-    """
-    img = Image.open(image_path).convert("RGB")
-    img = img.resize((128, 128))
+def load_model_safe():
+    global model
+    if model is None:
+        model = tf.keras.models.load_model("model.h5")
 
-    arr = np.array(img) / 255.0
-    arr = np.expand_dims(arr, axis=0)
+def cnn_detect(path):
+    try:
+        load_model_safe()
 
-    prediction = model.predict(arr)[0][0]
+        img = image.load_img(path, target_size=(128, 128))
+        img = image.img_to_array(img)
+        img = np.expand_dims(img, axis=0) / 255.0
 
-    print("Prediction Score:", prediction)
+        pred = model.predict(img)[0][0]
+        return pred > 0.6
 
-    return prediction > 0.7  # threshold
+    except Exception as e:
+        print("AI ERROR:", e)
+        return False  # fallback

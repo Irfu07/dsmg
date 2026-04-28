@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-// Your deployed AI FastAPI URL:
 const AI_URL = "https://dsmg-1.onrender.com/process";
 
 module.exports = {
@@ -8,15 +7,18 @@ module.exports = {
     try {
       const res = await axios.post(AI_URL, buffer, {
         headers: {
-          "Content-Type": "application/octet-stream"
-        }
+          "Content-Type": "application/octet-stream",
+        },
+        timeout: 5000
       });
 
       return res.data.status === "pirated";
+
     } catch (error) {
-      console.error("AI Service Error:", error.message);
-      // fallback if AI service fails
-      return false;
+      console.log("AI failed → using fallback");
+
+      // 🔥 FALLBACK LOGIC (VERY IMPORTANT)
+      return buffer.length < 50000;
     }
   }
 };
