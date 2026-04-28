@@ -1,7 +1,6 @@
 import tensorflow as tf
 import numpy as np
-from tensorflow.keras.preprocessing import image
-
+from tensorflow import keras
 model = None
 
 def load_model_safe():
