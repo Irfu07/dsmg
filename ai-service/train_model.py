@@ -1,3 +1,4 @@
+# type: ignore
 import tensorflow as tf
 from tensorflow.keras import layers, models
 import numpy as np
@@ -18,10 +19,13 @@ model = models.Sequential([
     layers.Dense(1, activation='sigmoid')
 ])
 
-model.compile(optimizer='adam',
-              loss='binary_crossentropy',
-              metrics=['accuracy'])
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
+)
 
 model.fit(X, y, epochs=5)
 
 model.save("model.h5")
+print("Model saved as model.h5")
