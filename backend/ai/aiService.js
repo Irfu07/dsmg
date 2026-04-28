@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 // Your deployed AI FastAPI URL:
-const AI_URL = "https://dsmg-ai.onrender.com/process";
+const AI_URL = "https://dsmg-1.onrender.com/process";
 
 module.exports = {
   async detectPiracy(buffer) {
